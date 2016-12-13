@@ -3,8 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Luke13 {
 
@@ -13,7 +11,7 @@ public class Luke13 {
     public static void main(String[] args) throws IOException {
         try (BufferedReader commands = new BufferedReader(new InputStreamReader(Luke13.class.getClassLoader().getResource("luke13input.txt").openStream()))) {
 
-            int[][] lights = new int[10000][10000];
+            boolean[][] lights = new boolean[10000][10000];
 
             commands
                     .lines()
@@ -36,13 +34,13 @@ public class Luke13 {
                             for (int y = command.fromY; y <= command.toY; y++) {
                                 switch (command.toggle) {
                                     case ON:
-                                        lights[x][y] |= 1;
+                                        lights[x][y] = true;
                                         break;
                                     case OFF:
-                                        lights[x][y] &= 0;
+                                        lights[x][y] = false;
                                         break;
                                     case TOGGLE:
-                                        lights[x][y] ^= 1;
+                                        lights[x][y] = !lights[x][y];
                                         break;
                                 }
                             }
@@ -50,10 +48,14 @@ public class Luke13 {
                     });
 
 
-            long turnedOn = Stream.of(lights)
-                    .flatMapToInt(IntStream::of)
-                    .filter(value -> value == 1)
-                    .count();
+            int turnedOn = 0;
+            for (boolean[] lightCol : lights) {
+                for (boolean light : lightCol) {
+                    if (light) {
+                        turnedOn++;
+                    }
+                }
+            }
 
             System.out.println(turnedOn);
         }
