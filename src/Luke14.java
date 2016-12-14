@@ -9,15 +9,15 @@ import static java.util.Arrays.asList;
 public class Luke14 {
 
     private static final double REQUIRED_ENERGY = 2.25 * Math.pow(10, 32);
-    private static final Set<Integer> ALLOYS = new HashSet<>(asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
+    private static final Set<Integer> METALS = new HashSet<>(asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
 
     public static void main(String[] args) {
 
         List<Alloy> enoughResistance = new ArrayList<>();
 
-        powerSet(ALLOYS)
+        powerSet(METALS)
                 .stream()
-                .filter(integers -> integers.size() % 2 == 0)
+                .filter(alloy -> alloy.size() % 2 == 0)
                 .map(Alloy::new)
                 .forEach(alloy -> {
                     if (alloy.resistance >= REQUIRED_ENERGY) {
